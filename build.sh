@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ORG=dx-oss
+ORG=dxdx
 NAME=docker-builder-php
 
 IMAGE_TAG_PREFIX=$ORG/$NAME:
