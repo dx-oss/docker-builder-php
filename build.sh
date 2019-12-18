@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pwd=$(pwd)
+
 ORG=dxdx
 NAME=docker-builder-php
 
@@ -30,7 +32,7 @@ function run {
 function build {
     local version=$1
     local branch=$2
-    local image=$3    
+    local image=$3
 
     local tag_version=$(echo $image | cut -d":" -f2 | cut -d"-" -f1)
     local tag_major_version=$(echo $branch | cut -d"-" -f2)
@@ -39,13 +41,18 @@ function build {
     local tag_major=$ORG/$NAME:$tag_major_version
 
     echo "$version ($branch) ($image) [$tag] [$tag_major]"
-    
-    run git checkout $branch
+
+    run cp common/* $branch    
+    run cd $branch
     run docker build --build-arg '"DOCKER_IMAGE=$image"' -t $tag .
     run docker tag $tag $tag_major
     run docker push $tag
     run docker push $tag_major
-    run git checkout master
+    for c in `ls ../common`
+    do
+        run rm $c
+    done 
+    run cd $pwd
 }
 
 for v in $VERSIONS
