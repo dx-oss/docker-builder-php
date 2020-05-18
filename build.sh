@@ -2,22 +2,28 @@
 
 pwd=$(pwd)
 
-ORG=dxdx
+REGISTRY_SERVER=${REGISTRY_SERVER}
+REGISTRY_USER=${REGISTRY_USER}
+REGISTRY_SECRET=${REGISTRY_SECRET}
+
+OWNER=${OWNER:-dxdx}
 NAME=docker-builder-php
 
-IMAGE_TAG_PREFIX=$ORG/$NAME:
+IMAGE_TAG_PREFIX=$OWNER/$NAME:
 
+IMAGE_PHP74=php:7.4.6-fpm
 IMAGE_PHP73=php:7.3.11-fpm
 IMAGE_PHP72=php:7.2.23-fpm
 IMAGE_PHP71=php:7.1.33-fpm
 IMAGE_PHP70=php:7.0.33-fpm
 
+BRANCH_PHP74=php-7.4
 BRANCH_PHP73=php-7.3
 BRANCH_PHP72=php-7.2
 BRANCH_PHP71=php-7.1
 BRANCH_PHP70=php-7.0
 
-VERSIONS="PHP70 PHP71 PHP72 PHP73"
+VERSIONS="PHP70 PHP71 PHP72 PHP73 PHP74"
 VERSIONS=${1:-$VERSIONS}
 
 function log {
@@ -37,8 +43,8 @@ function build {
     local tag_version=$(echo $image | cut -d":" -f2 | cut -d"-" -f1)
     local tag_major_version=$(echo $branch | cut -d"-" -f2)
 
-    local tag=$ORG/$NAME:$tag_version
-    local tag_major=$ORG/$NAME:$tag_major_version
+    local tag=$OWNER/$NAME:$tag_version
+    local tag_major=$OWNER/$NAME:$tag_major_version
 
     echo "$version ($branch) ($image) [$tag] [$tag_major]"
 
@@ -54,6 +60,10 @@ function build {
     done 
     run cd $pwd
 }
+
+if [ "$REGISTRY_SERVER" != "" ] && [ "$REGISTRY_USER" != "" ] && [ "$REGISTRY_SECRET" != "" ]; then
+	echo $REGISTRY_SECRET | docker login -u $REGISTRY_USER --password-stdin $REGISTRY_SERVER
+fi
 
 for v in $VERSIONS
 do
