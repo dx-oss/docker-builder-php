@@ -11,11 +11,11 @@ NAME=docker-builder-php
 
 IMAGE_TAG_PREFIX=$OWNER/$NAME:
 
-IMAGE_PHP74=php:7.4.6-fpm
-IMAGE_PHP73=php:7.3.11-fpm
-IMAGE_PHP72=php:7.2.23-fpm
-IMAGE_PHP71=php:7.1.33-fpm
-IMAGE_PHP70=php:7.0.33-fpm
+IMAGE_PHP74=bitnami/php-fpm:7.4.6-debian-10-r3-prod
+IMAGE_PHP73=bitnami/php-fpm:7.3.11-debian-9-r20-prod
+IMAGE_PHP72=bitnami/php-fpm:7.2.23-debian-9-r20-prod
+IMAGE_PHP71=bitnami/php-fpm:7.1.33-debian-9-r20-prod
+IMAGE_PHP70=bitnami/php-fpm:7.0.33-debian-9-r20-prod
 
 BRANCH_PHP74=php-7.4
 BRANCH_PHP73=php-7.3
