@@ -3,7 +3,8 @@ ARG DOCKER_IMAGE=bitnami/php-fpm:7.1.33-debian-9-r20-prod
 FROM csakshaug/of-watchdog-wrapper as  wrapper
 FROM openfaas/of-watchdog:0.7.2 as watchdog
 FROM dxcn/ssht:0.0.2 as ssht
-FROM dxdx/env-tester:v0.0.4 as env-tester
+FROM dxcn/k8st:0.0.9 as k8st
+FROM dxdx/env-tester:v0.0.7 as env-tester
 FROM migrate/migrate as migrate
 FROM ${DOCKER_IMAGE} as base
 ARG TRACKMAN_VERSION=1.0.1
@@ -14,6 +15,7 @@ USER root
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 COPY --from=wrapper /usr/bin/of-watchdog-wrapper /usr/bin/of-watchdog-wrapper
 COPY --from=ssht /usr/bin/ssht /usr/bin/ssht
+COPY --from=k8st /usr/bin/k8st /usr/bin/k8st
 COPY --from=env-tester /usr/bin/env-tester /usr/bin/env-tester
 COPY --from=migrate /usr/local/bin/migrate /usr/bin/migrate
 COPY init_ssh.sh /usr/local/bin
